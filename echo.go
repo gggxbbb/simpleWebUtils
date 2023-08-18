@@ -17,3 +17,8 @@ func echoCode(c *gin.Context) {
 	}
 	c.Data(intCode, "", nil)
 }
+
+func echoUA(c *gin.Context) {
+	ua := c.GetHeader("User-Agent")
+	c.Data(200, "text/plain", []byte(ua))
+}
