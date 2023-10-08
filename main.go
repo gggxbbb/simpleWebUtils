@@ -14,7 +14,7 @@ func main() {
 
 	r.GET("/analyze/ua", analyzeUA)
 
-	err := r.Run()
+	err := r.Run(":4399")
 	if err != nil {
 		return
 	}
