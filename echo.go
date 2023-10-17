@@ -27,3 +27,8 @@ func echoIP(c *gin.Context) {
 	ip := c.ClientIP()
 	c.Data(200, "text/plain", []byte(ip))
 }
+
+func echoRemote(c *gin.Context) {
+	addr := c.Request.RemoteAddr
+	c.Data(200, "text/plain", []byte(addr))
+}
