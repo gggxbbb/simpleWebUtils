@@ -29,6 +29,9 @@
 
 返回 IP 地址
 
+### echo/addr
+-> [echo/addr](https://t.gxb.icu/echo/addr)
+
 ## analyze
 
 ### analyze/ua
