@@ -12,7 +12,6 @@ func main() {
 	r.GET("/echo/code/:code", echoCode)
 	r.GET("/echo/ua", echoUA)
 	r.GET("/echo/ip", echoIP)
-	r.GET("/echo/addr", echoRemote)
 
 	r.GET("/analyze/ua", analyzeUA)
 
