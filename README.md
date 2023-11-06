@@ -36,3 +36,12 @@
 -> [analyze/ua](https://t.gxb.icu/analyze/ua)
 
 分析 User-Agent
+
+## utils
+
+### utils/minecraft
+
+获取 Minecraft Motd 信息 (暂时只支持 Minecraft Bedrock)
+
+-> utils/minecraft/bedrock/<address>
+-> utils/minecraft/bedrock/<address>/<port>

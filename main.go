@@ -15,6 +15,9 @@ func main() {
 
 	r.GET("/analyze/ua", analyzeUA)
 
+	r.GET("utils/minecraft/bedrock/:server", utilsMinecraftBedrock)
+	r.GET("/utils/minecraft/bedrock/:server/:port", utilsMinecraftBedrock)
+
 	err := r.Run(":4399")
 	if err != nil {
 		return
