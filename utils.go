@@ -64,6 +64,8 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 
 	motd := string(buf)
 	data := strings.Split(motd, ";")
+	//remove last empty string
+	data = data[:len(data)-1]
 
 	online, err := strconv.Atoi(data[4])
 	max, err := strconv.Atoi(data[5])
