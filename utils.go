@@ -23,7 +23,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot resolve server",
-			"description": err.Error(),
+			"description": localAddressCleaner(err.Error()),
 		})
 		return
 	}
@@ -33,7 +33,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot connect to server",
-			"description": err.Error(),
+			"description": localAddressCleaner(err.Error()),
 		})
 		return
 	}
@@ -45,7 +45,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot send payload",
-			"description": err.Error(),
+			"description": localAddressCleaner(err.Error()),
 		})
 		return
 	}
@@ -57,7 +57,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot receive response",
-			"description": err.Error(),
+			"description": localAddressCleaner(err.Error()),
 		})
 		return
 	}
@@ -72,7 +72,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot parse response",
-			"description": err.Error(),
+			"description": localAddressCleaner(err.Error()),
 		})
 		return
 	}
