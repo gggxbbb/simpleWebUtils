@@ -28,6 +28,8 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 		return
 	}
 
+	target_ip := addr.IP.String()
+
 	//connect to server
 	conn, err := net.DialUDP("udp", nil, addr)
 	if err != nil {
@@ -89,6 +91,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
 		"raw":       data,
 		"server":    server,
+		"server_ip": target_ip,
 		"port":      port,
 		"motd":      data[1],
 		"protocol":  data[2],
