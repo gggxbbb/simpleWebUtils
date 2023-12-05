@@ -37,7 +37,9 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 		})
 		return
 	}
-	defer conn.Close()
+	defer func(conn *net.UDPConn) {
+		_ = conn.Close()
+	}(conn)
 
 	//send payload
 	payload, _ := hex.DecodeString("0100000000240D12D300FFFF00FEFEFEFEFDFDFDFD12345678")
@@ -52,7 +54,14 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 
 	//receive response
 	buf := make([]byte, 1024)
-	conn.SetReadDeadline(time.Now().Add(5 * time.Second))
+	err = conn.SetReadDeadline(time.Now().Add(5 * time.Second))
+	if err != nil {
+		ctx.JSON(400, gin.H{
+			"error":       "cannot set read deadline",
+			"description": localAddressCleaner(err.Error()),
+		})
+		return
+	}
 	_, err = conn.Read(buf)
 	if err != nil {
 		ctx.JSON(400, gin.H{
