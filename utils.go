@@ -9,17 +9,40 @@ import (
 	"time"
 )
 
+type minecraftBedrockRemote struct {
+	Server string `json:"server"`
+	Port   string `json:"port"`
+}
+
 // motd-bedrock
 func utilsMinecraftBedrock(ctx *gin.Context) {
 
-	server := ctx.Param("server")
-	port := ctx.Param("port")
-	if port == "" {
-		port = "19132"
+	var server minecraftBedrockRemote
+
+	if ctx.Request.Method == "GET" {
+		//GET
+		server = minecraftBedrockRemote{
+			Server: ctx.Param("server"),
+			Port:   ctx.Param("port"),
+		}
+	} else if ctx.Request.Method == "POST" {
+		//POST
+		err := ctx.Bind(&server)
+		if err != nil {
+			ctx.JSON(400, gin.H{
+				"error":       "cannot parse request",
+				"description": localAddressCleaner(err.Error()),
+			})
+			return
+		}
+	}
+
+	if server.Port == "" {
+		server.Port = "19132"
 	}
 
 	//reserve server
-	addr, err := net.ResolveUDPAddr("udp", server+":"+port)
+	addr, err := net.ResolveUDPAddr("udp", server.Server+":"+server.Port)
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot resolve server",
@@ -90,9 +113,9 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 
 	ctx.JSON(200, gin.H{
 		"raw":       data,
-		"server":    server,
+		"server":    server.Server,
 		"server_ip": target_ip,
-		"port":      port,
+		"port":      server.Port,
 		"motd":      data[1],
 		"protocol":  data[2],
 		"version":   data[3],

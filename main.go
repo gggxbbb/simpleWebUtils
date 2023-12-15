@@ -17,6 +17,7 @@ func main() {
 
 	r.GET("utils/minecraft/bedrock/:server", utilsMinecraftBedrock)
 	r.GET("/utils/minecraft/bedrock/:server/:port", utilsMinecraftBedrock)
+	r.POST("/utils/minecraft/bedrock", utilsMinecraftBedrock)
 
 	err := r.Run(":4399")
 	if err != nil {

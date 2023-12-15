@@ -44,7 +44,16 @@
 获取 Minecraft Motd 信息 (暂时只支持 Minecraft Bedrock)
 
 ```
-/utils/minecraft/bedrock/<address>
-/utils/minecraft/bedrock/<address>/<port>
+GET /utils/minecraft/bedrock/<address>
+GET /utils/minecraft/bedrock/<address>/<port>
 ```
 
+或通过 POST 提交
+
+```
+POST /utils/minecraft/bedrock
+{
+    "server": "<address>",
+    "port": <port>
+}
+```
