@@ -1,9 +1,10 @@
-package main
+package minecraft
 
 import (
 	"encoding/hex"
 	"github.com/gin-gonic/gin"
 	"net"
+	"simpleWebUtils/utils"
 	"strconv"
 	"strings"
 	"time"
@@ -31,7 +32,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 		if err != nil {
 			ctx.JSON(400, gin.H{
 				"error":       "cannot parse request",
-				"description": localAddressCleaner(err.Error()),
+				"description": utils.LocalAddressCleaner(err.Error()),
 			})
 			return
 		}
@@ -46,7 +47,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot resolve server",
-			"description": localAddressCleaner(err.Error()),
+			"description": utils.LocalAddressCleaner(err.Error()),
 		})
 		return
 	}
@@ -58,7 +59,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot connect to server",
-			"description": localAddressCleaner(err.Error()),
+			"description": utils.LocalAddressCleaner(err.Error()),
 		})
 		return
 	}
@@ -72,7 +73,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot send payload",
-			"description": localAddressCleaner(err.Error()),
+			"description": utils.LocalAddressCleaner(err.Error()),
 		})
 		return
 	}
@@ -83,7 +84,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot set read deadline",
-			"description": localAddressCleaner(err.Error()),
+			"description": utils.LocalAddressCleaner(err.Error()),
 		})
 		return
 	}
@@ -91,7 +92,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot receive response",
-			"description": localAddressCleaner(err.Error()),
+			"description": utils.LocalAddressCleaner(err.Error()),
 		})
 		return
 	}
@@ -106,7 +107,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot parse response",
-			"description": localAddressCleaner(err.Error()),
+			"description": utils.LocalAddressCleaner(err.Error()),
 		})
 		return
 	}

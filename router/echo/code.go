@@ -1,4 +1,4 @@
-package main
+package echo
 
 import (
 	"github.com/gin-gonic/gin"
@@ -16,14 +16,4 @@ func echoCode(c *gin.Context) {
 		return
 	}
 	c.Data(intCode, "", nil)
-}
-
-func echoUA(c *gin.Context) {
-	ua := c.GetHeader("User-Agent")
-	c.Data(200, "text/plain", []byte(ua))
-}
-
-func echoIP(c *gin.Context) {
-	ip := c.ClientIP()
-	c.Data(200, "text/plain", []byte(ip))
 }

@@ -2,6 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"simpleWebUtils/router/analyze"
+	"simpleWebUtils/router/echo"
+	"simpleWebUtils/router/minecraft"
 )
 
 func main() {
@@ -9,15 +12,9 @@ func main() {
 	r := gin.Default()
 	r.GET("/", readme)
 
-	r.GET("/echo/code/:code", echoCode)
-	r.GET("/echo/ua", echoUA)
-	r.GET("/echo/ip", echoIP)
-
-	r.GET("/analyze/ua", analyzeUA)
-
-	r.GET("utils/minecraft/bedrock/:server", utilsMinecraftBedrock)
-	r.GET("/utils/minecraft/bedrock/:server/:port", utilsMinecraftBedrock)
-	r.POST("/utils/minecraft/bedrock", utilsMinecraftBedrock)
+	echo.Init(r)
+	analyze.Init(r)
+	minecraft.Init(r)
 
 	err := r.Run(":4399")
 	if err != nil {

@@ -37,21 +37,20 @@
 
 分析 User-Agent
 
-## utils
+## minecraft
 
-### utils/minecraft
-
-获取 Minecraft Motd 信息 (暂时只支持 Minecraft Bedrock)
+### bedrock
+获取 Minecraft Bedrock Motd 信息
 
 ```
-GET /utils/minecraft/bedrock/<address>
-GET /utils/minecraft/bedrock/<address>/<port>
+GET /minecraft/bedrock/<address>
+GET /minecraft/bedrock/<address>/<port>
 ```
 
 或通过 POST 提交
 
 ```
-POST /utils/minecraft/bedrock
+POST /minecraft/bedrock
 {
     "server": "<address>",
     "port": <port>
