@@ -4,38 +4,35 @@
 
 [Github](https://github.com/gggxbbb/simpleWebUtils)
 
-## echo
+## code
 
-单纯地返回
-
-### echo/code
-
--> [echo/code/404](https://t.gxb.icu/echo/code/404)
+-> [/code/404](https://t.gxb.icu/code/404)
 
 根据提交的状态值返回状态值，例如：
 ```
-/echo/code/404
-/echo/code/502
+/code/404
+/code/502
 ```
 
-### echo/ua
-
--> [echo/ua](https://t.gxb.icu/echo/ua)
+## ua
 
 返回 User-Agent
 
-### echo/ip
--> [echo/ip](https://t.gxb.icu/echo/ip)
+-> [/ua](https://t.gxb.icu/ua)
 
-返回 IP 地址
+返回 User-Agent
 
-## analyze
+### ua/analyze
 
-### analyze/ua
-
--> [analyze/ua](https://t.gxb.icu/analyze/ua)
+-> [ua/analyze](https://t.gxb.icu/ua/analyze)
 
 分析 User-Agent
+
+## ip
+
+-> [/ip](https://t.gxb.icu/ip)
+
+返回访问者 IP
 
 ## minecraft
 
