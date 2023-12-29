@@ -14,6 +14,16 @@
 /code/502
 ```
 
+### detail
+
+-> [/code/detail/404](https://t.gxb.icu/code/detail/404)
+
+根据提交的状态值返回状态值的详细信息，例如：
+```
+/code/detail/404
+/code/detail/502
+```
+
 ## ua
 
 返回 User-Agent
