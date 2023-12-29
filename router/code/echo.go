@@ -1,11 +1,11 @@
-package echo
+package code
 
 import (
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
 
-func echoCode(c *gin.Context) {
+func echo(c *gin.Context) {
 	code := c.Param("code")
 	// parse code to int
 	intCode, err := strconv.Atoi(code)

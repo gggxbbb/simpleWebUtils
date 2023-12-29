@@ -2,9 +2,10 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"simpleWebUtils/router/analyze"
-	"simpleWebUtils/router/echo"
+	"simpleWebUtils/router/code"
+	"simpleWebUtils/router/ip"
 	"simpleWebUtils/router/minecraft"
+	"simpleWebUtils/router/ua"
 )
 
 func main() {
@@ -12,8 +13,9 @@ func main() {
 	r := gin.Default()
 	r.GET("/", readme)
 
-	echo.Init(r)
-	analyze.Init(r)
+	ua.Init(r)
+	ip.Init(r)
+	code.Init(r)
 	minecraft.Init(r)
 
 	err := r.Run(":4399")
