@@ -14,6 +14,16 @@
 /code/502
 ```
 
+### html
+
+-> [/code/html/404](https://t.gxb.icu/code/html/404)
+
+根据提交的状态值返回状态值的 HTML 页面，例如：
+```
+/code/html/404
+/code/html/502
+```
+
 ### detail
 
 -> [/code/detail/404](https://t.gxb.icu/code/detail/404)
