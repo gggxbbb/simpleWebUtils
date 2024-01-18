@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User-Agent</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        #main {
+            display: grid;
+            grid-template-columns: 45% 5% 50%;
+            justify-items: stretch;
+            align-items: center;
+            font-family: "Courier New", Courier, monospace;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .empty-row {
+            grid-column: 1 / 4;
+            height: 20px;
+        }
+
+        .key, .eq, .value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .key {
+            text-align: right;
+        }
+
+        .eq {
+            text-align: center;
+        }
+
+        .value {
+            text-align: left;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="main">
+
+    <p class="key">UserAgent</p>
+    <p class="eq">=</p>
+    <p class="value">{{.String}}</p>
+
+    <div class="empty-row"></div>
+
+    <p class="key">Browser</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Name}}</p>
+
+    <p class="key">BrowserVersionNo</p>
+    <p class="eq"></p>
+    <p class="value"></p>
+
+    <p class="key">->Major</p>
+    <p class="eq">=</p>
+    <p class="value">{{.VersionNo.Major}}</p>
+
+    <p class="key">->Minor</p>
+    <p class="eq">=</p>
+    <p class="value">{{.VersionNo.Minor}}</p>
+
+    <p class="key">->Patch</p>
+    <p class="eq">=</p>
+    <p class="value">{{.VersionNo.Patch}}</p>
+
+    <div class="empty-row"></div>
+
+    <p class="key">OS</p>
+    <p class="eq">=</p>
+    <p class="value">{{.OS}}</p>
+
+    <p class="key">OSVersion</p>
+    <p class="eq">=</p>
+    <p class="value">{{.OSVersion}}</p>
+
+    <p class="key">OSVersionNo</p>
+    <p class="eq"></p>
+    <p class="value"></p>
+
+    <p class="key">->Major</p>
+    <p class="eq">=</p>
+    <p class="value">{{.OSVersionNo.Major}}</p>
+
+    <p class="key">->Minor</p>
+    <p class="eq">=</p>
+    <p class="value">{{.OSVersionNo.Minor}}</p>
+
+    <p class="key">->Patch</p>
+    <p class="eq">=</p>
+    <p class="value">{{.OSVersionNo.Patch}}</p>
+
+    <div class="empty-row"></div>
+
+    <p class="key">Device</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Device}}</p>
+
+    <p class="key">DeviceType</p>
+    <p class="eq"></p>
+    <p class="value"></p>
+
+    <p class="key">->Mobile</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Mobile}}</p>
+
+    <p class="key">->Tablet</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Tablet}}</p>
+
+    <p class="key">->Desktop</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Desktop}}</p>
+
+    <p class="key">->Bot</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Bot}}</p>
+
+</div>
+
+</body>
+</html>

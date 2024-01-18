@@ -48,6 +48,12 @@
 
 分析 User-Agent
 
+### ua/html
+
+-> [/ua/html](https://t.gxb.icu/ua/html)
+
+返回 User-Agent 的 HTML 页面
+
 ## ip
 
 -> [/ip](https://t.gxb.icu/ip)
