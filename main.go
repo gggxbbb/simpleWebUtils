@@ -9,7 +9,8 @@ import (
 	"strconv"
 )
 
-var variablePorts string = "0"
+// using `go build -ldflags "-X main.variablePorts=1"` to enable variable ports
+var variablePorts = "0"
 
 func main() {
 
