@@ -31,7 +31,7 @@ type dContinent struct {
 
 type dCountry struct {
 	Name      string
-	ISOCde    string
+	ISOCode   string
 	GeoNameID uint
 	IsInEU    bool
 }
@@ -84,7 +84,7 @@ func analyzeIP(ip string) data {
 			},
 			Country: dCountry{
 				Name:      record.Country.Names["en"],
-				ISOCde:    record.Country.IsoCode,
+				ISOCode:   record.Country.IsoCode,
 				GeoNameID: record.Country.GeoNameID,
 				IsInEU:    record.Country.IsInEuropeanUnion,
 			},
