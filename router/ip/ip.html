@@ -66,7 +66,7 @@
     <p class="value">{{.Country}}</p>
 
     <p class="key">City</p>
-    <p class="eq"></p>
+    <p class="eq">=</p>
     <p class="value">{{.City}}</p>
 
 
@@ -76,6 +76,90 @@
     <p class="eq">=</p>
     <p class="value">{{.ISOCode}}</p>
 
+    <div class="empty-row"></div>
+
+    <p class="key">Full</p>
+    <p class="eq">-</p>
+    <p class="value">Detail</p>
+
+    <div class="empty-row"></div>
+
+    <p class="key">City</p>
+    <p class="eq"></p>
+    <p class="value"></p>
+
+    <p class="key">->Name</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.City.Name}}</p>
+
+    <p class="key">->GeoNameID</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.City.GeoNameID}}</p>
+
+    <div class="empty-row"></div>
+
+    <p class="key">Postal</p>
+    <p class="eq"></p>
+    <p class="value"></p>
+
+    <p class="key">->Code</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.Postal.Code}}</p>
+
+    <div class="empty-row"></div>
+
+    <p class="key">Continent</p>
+    <p class="eq"></p>
+    <p class="value"></p>
+
+    <p class="key">->Name</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.Continent.Name}}</p>
+
+    <p class="key">->Code</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.Continent.Code}}</p>
+
+    <p class="key">->GeoNameID</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.Continent.GeoNameID}}</p>
+
+    <div class="empty-row"></div>
+
+    <p class="key">Country</p>
+    <p class="eq"></p>
+    <p class="value"></p>
+
+    <p class="key">->Name</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.Country.Name}}</p>
+
+    <p class="key">->ISOCode</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.Country.ISOCode}}</p>
+
+    <p class="key">->GeoNameID</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.Country.GeoNameID}}</p>
+
+    <p class="key">->IsInEU</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.Country.IsInEU}}</p>
+
+    <div class="empty-row"></div>
+
+    <p class="key">Traits</p>
+    <p class="eq"></p>
+    <p class="value"></p>
+
+    <p class="key">->IsAnonymousProxy</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.Traits.IsAnonymousProxy}}</p>
+
+    <p class="key">->IsSatelliteProvider</p>
+    <p class="eq">=</p>
+    <p class="value">{{.Detail.Traits.IsSatelliteProvider}}</p>
+    
 </div>
 
 </body>

@@ -60,6 +60,18 @@
 
 返回访问者 IP
 
+### ip/analyze
+
+-> [/ip/analyze](https://t.gxb.icu/ip/analyze)
+
+分析 IP
+
+### ip/html
+
+-> [/ip/html](https://t.gxb.icu/ip/html)
+
+返回访问者 IP 的 HTML 页面
+
 ## minecraft
 
 ### bedrock
