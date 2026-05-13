@@ -60,6 +60,8 @@
 
 返回访问者 IP
 
+在经过 CDN/反向代理访问时，会优先从常见回源头读取真实客户端 IP（如 `X-Forwarded-For`、`X-Real-IP`、`CF-Connecting-IP`、`True-Client-IP`）。
+
 ### ip/analyze
 
 -> [/ip/analyze](https://t.gxb.icu/ip/analyze)

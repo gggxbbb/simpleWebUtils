@@ -15,6 +15,12 @@ var variablePorts = "0"
 func main() {
 
 	r := gin.Default()
+	r.RemoteIPHeaders = append(r.RemoteIPHeaders,
+		"CF-Connecting-IP",
+		"True-Client-IP",
+		"X-Client-IP",
+		"X-Original-Forwarded-For",
+	)
 
 	r.GET("/", readme)
 
