@@ -153,16 +153,32 @@ func QueryJavaMOTD(server string, port string) (*JavaMOTDResult, error) {
 
 	handshakeData := make([]byte, 0)
 	handshakeData = append(handshakeData, 0x00)
-	handshakeData = append(handshakeData, writeVarInt(47)...)
-	handshakeData = append(handshakeData, writeString(server)...)
+	versionVarInt, err := writeVarInt(47)
+	if err != nil {
+		return nil, fmt.Errorf("cannot build version varint: %w", err)
+	}
+	handshakeData = append(handshakeData, versionVarInt...)
+	serverString, err := writeString(server)
+	if err != nil {
+		return nil, fmt.Errorf("cannot build server string: %w", err)
+	}
+	handshakeData = append(handshakeData, serverString...)
 	portInt, err := strconv.Atoi(port)
 	if err != nil || portInt < 0 || portInt > 65535 {
 		return nil, fmt.Errorf("invalid port: %s", port)
 	}
 	handshakeData = append(handshakeData, byte(portInt>>8), byte(portInt))
-	handshakeData = append(handshakeData, writeVarInt(1)...)
+	nextStateVarInt, err := writeVarInt(1)
+	if err != nil {
+		return nil, fmt.Errorf("cannot build next-state varint: %w", err)
+	}
+	handshakeData = append(handshakeData, nextStateVarInt...)
 
-	handshakePacket := append(writeVarInt(len(handshakeData)), handshakeData...)
+	packetLengthVarInt, err := writeVarInt(len(handshakeData))
+	if err != nil {
+		return nil, fmt.Errorf("cannot build packet-length varint: %w", err)
+	}
+	handshakePacket := append(packetLengthVarInt, handshakeData...)
 	_, err = conn.Write(handshakePacket)
 	if err != nil {
 		return nil, fmt.Errorf("cannot send handshake payload: %w", err)
@@ -249,12 +265,15 @@ func readPacket(r io.Reader) ([]byte, error) {
 	return data, nil
 }
 
-func writeVarInt(value int) []byte {
+func writeVarInt(value int) ([]byte, error) {
+	if value < 0 {
+		return nil, errors.New("varint cannot be negative")
+	}
 	result := make([]byte, 0)
 	for {
 		if (value & ^0x7F) == 0 {
 			result = append(result, byte(value))
-			return result
+			return result, nil
 		}
 		result = append(result, byte((value&0x7F)|0x80))
 		value >>= 7
@@ -282,9 +301,13 @@ func readVarInt(r io.ByteReader) (int, error) {
 	return result, nil
 }
 
-func writeString(value string) []byte {
+func writeString(value string) ([]byte, error) {
 	strBytes := []byte(value)
-	return append(writeVarInt(len(strBytes)), strBytes...)
+	lengthVarInt, err := writeVarInt(len(strBytes))
+	if err != nil {
+		return nil, err
+	}
+	return append(lengthVarInt, strBytes...), nil
 }
 
 func readString(r io.ByteReader) (string, error) {
