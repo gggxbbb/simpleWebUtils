@@ -61,7 +61,10 @@ func QueryBedrockMOTD(server string, port string) (*BedrockMOTDResult, error) {
 		_ = conn.Close()
 	}(conn)
 
-	payload, _ := hex.DecodeString("0100000000240D12D300FFFF00FEFEFEFEFDFDFDFD12345678")
+	payload, err := hex.DecodeString("0100000000240D12D300FFFF00FEFEFEFEFDFDFDFD12345678")
+	if err != nil {
+		return nil, fmt.Errorf("cannot prepare payload: %w", err)
+	}
 	_, err = conn.Write(payload)
 	if err != nil {
 		return nil, fmt.Errorf("cannot send payload: %w", err)
