@@ -16,6 +16,9 @@ import (
 const (
 	// Bedrock unconnected ping payload used for MOTD queries.
 	bedrockUnconnectedPingPayload = "0100000000240D12D300FFFF00FEFEFEFEFDFDFDFD12345678"
+	bedrockMaxResponseSize        = 2048
+	maxStatusPacketLength         = 1024 * 1024
+	maxStatusStringLength         = 1024 * 1024
 	maxVarIntBytes                = 5
 )
 
@@ -76,7 +79,7 @@ func QueryBedrockMOTD(server string, port string) (*BedrockMOTDResult, error) {
 		return nil, fmt.Errorf("cannot send payload: %w", err)
 	}
 
-	buf := make([]byte, 2048)
+	buf := make([]byte, bedrockMaxResponseSize)
 	err = conn.SetReadDeadline(time.Now().Add(5 * time.Second))
 	if err != nil {
 		return nil, fmt.Errorf("cannot set read deadline: %w", err)
@@ -257,6 +260,9 @@ func readPacket(r io.Reader) ([]byte, error) {
 	if length < 0 {
 		return nil, errors.New("invalid packet length")
 	}
+	if length > maxStatusPacketLength {
+		return nil, errors.New("packet length is too large")
+	}
 	data := make([]byte, length)
 	_, err = io.ReadFull(bufferedReader, data)
 	if err != nil {
@@ -322,6 +328,9 @@ func readString(r io.ByteReader) (string, error) {
 	}
 	if length < 0 {
 		return "", errors.New("string length cannot be negative")
+	}
+	if length > maxStatusStringLength {
+		return "", errors.New("string length is too large")
 	}
 	strBytes := make([]byte, length)
 	for i := 0; i < length; i++ {
