@@ -91,3 +91,45 @@ POST /minecraft/bedrock
     "port": <port>
 }
 ```
+
+### java
+获取 Minecraft Java Motd 信息
+
+```
+GET /minecraft/java/<address>
+GET /minecraft/java/<address>/<port>
+```
+
+或通过 POST 提交
+
+```
+POST /minecraft/java
+{
+    "server": "<address>",
+    "port": <port>
+}
+```
+
+## mcp
+
+提供 MCP Server 的 JSON-RPC 接口（尽可能兼容常用 MCP 调用方式）
+
+```
+GET /mcp
+POST /mcp
+```
+
+支持的方法：
+
+```
+initialize
+tools/list
+tools/call
+```
+
+可用工具：
+
+```
+bedrock_motd
+java_motd
+```

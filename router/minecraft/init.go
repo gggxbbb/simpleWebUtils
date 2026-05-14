@@ -6,4 +6,7 @@ func Init(r *gin.Engine) {
 	r.GET("/minecraft/bedrock/:server", utilsMinecraftBedrock)
 	r.GET("/minecraft/bedrock/:server/:port", utilsMinecraftBedrock)
 	r.POST("/minecraft/bedrock", utilsMinecraftBedrock)
+	r.GET("/minecraft/java/:server", utilsMinecraftJava)
+	r.GET("/minecraft/java/:server/:port", utilsMinecraftJava)
+	r.POST("/minecraft/java", utilsMinecraftJava)
 }
