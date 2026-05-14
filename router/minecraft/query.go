@@ -13,6 +13,12 @@ import (
 	"time"
 )
 
+const (
+	// Bedrock unconnected ping payload used for MOTD queries.
+	bedrockUnconnectedPingPayload = "0100000000240D12D300FFFF00FEFEFEFEFDFDFDFD12345678"
+	maxVarIntBytes                = 5
+)
+
 type BedrockMOTDResult struct {
 	Raw       []string `json:"raw"`
 	Server    string   `json:"server"`
@@ -61,7 +67,7 @@ func QueryBedrockMOTD(server string, port string) (*BedrockMOTDResult, error) {
 		_ = conn.Close()
 	}(conn)
 
-	payload, err := hex.DecodeString("0100000000240D12D300FFFF00FEFEFEFEFDFDFDFD12345678")
+	payload, err := hex.DecodeString(bedrockUnconnectedPingPayload)
 	if err != nil {
 		return nil, fmt.Errorf("cannot prepare payload: %w", err)
 	}
@@ -266,7 +272,7 @@ func readVarInt(r io.ByteReader) (int, error) {
 		value := int(read & 0x7F)
 		result |= value << (7 * numRead)
 		numRead++
-		if numRead > 5 {
+		if numRead > maxVarIntBytes {
 			return 0, errors.New("varint is too big")
 		}
 		if (read & 0x80) == 0 {
