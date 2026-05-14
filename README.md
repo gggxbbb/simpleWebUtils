@@ -60,6 +60,10 @@
 
 返回访问者 IP
 
+在经过 CDN/反向代理访问时，会优先从常见回源头读取真实客户端 IP（如 `CF-Connecting-IP`、`True-Client-IP`、`X-Client-IP`、`X-Original-Forwarded-For`、`X-Forwarded-For`、`X-Real-IP`）。
+
+默认仅信任本机代理（`127.0.0.1`、`::1`）。生产环境可通过环境变量 `TRUSTED_PROXIES`（逗号分隔的 IP/CIDR）配置受信任的 CDN/Ingress 代理网段。
+
 ### ip/analyze
 
 -> [/ip/analyze](https://t.gxb.icu/ip/analyze)
