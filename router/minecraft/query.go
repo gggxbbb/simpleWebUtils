@@ -254,7 +254,7 @@ func readPacket(r io.Reader) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	if length <= 0 {
+	if length < 0 {
 		return nil, errors.New("invalid packet length")
 	}
 	data := make([]byte, length)
@@ -270,12 +270,17 @@ func writeVarInt(value int) ([]byte, error) {
 		return nil, errors.New("varint cannot be negative")
 	}
 	result := make([]byte, 0)
+	numWritten := 0
 	for {
+		if numWritten >= maxVarIntBytes {
+			return nil, errors.New("varint is too big")
+		}
 		if (value & ^0x7F) == 0 {
 			result = append(result, byte(value))
 			return result, nil
 		}
 		result = append(result, byte((value&0x7F)|0x80))
+		numWritten++
 		value >>= 7
 	}
 }

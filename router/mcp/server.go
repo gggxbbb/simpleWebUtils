@@ -168,7 +168,13 @@ func invoke(method string, params map[string]interface{}) (interface{}, *rpcErro
 			}
 		}
 
-		serialized, _ := json.Marshal(data)
+		serialized, err := json.Marshal(data)
+		if err != nil {
+			return nil, &rpcError{
+				Code:    -32001,
+				Message: "cannot serialize tool response",
+			}
+		}
 		return gin.H{
 			"content": []gin.H{
 				{
