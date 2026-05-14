@@ -27,7 +27,7 @@ func main() {
 	}
 	trustedProxies := []string{"127.0.0.1", "::1"}
 	if envTrustedProxies := strings.TrimSpace(os.Getenv("TRUSTED_PROXIES")); envTrustedProxies != "" {
-		trustedProxies = trustedProxies[:0]
+		trustedProxies = []string{}
 		for _, trustedProxy := range strings.Split(envTrustedProxies, ",") {
 			trustedProxy = strings.TrimSpace(trustedProxy)
 			if trustedProxy == "" {
@@ -37,7 +37,7 @@ func main() {
 		}
 	}
 	if err := r.SetTrustedProxies(trustedProxies); err != nil {
-		panic(err)
+		panic("failed to configure trusted proxies: " + err.Error())
 	}
 
 	r.GET("/", readme)
