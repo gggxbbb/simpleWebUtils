@@ -1,6 +1,7 @@
 package ip
 
 import (
+	"fmt"
 	"github.com/oschwald/geoip2-golang"
 	"net"
 	"os"
@@ -107,7 +108,7 @@ func openGeoIPDB() (*geoip2.Reader, error) {
 
 	execPath, err := os.Executable()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to determine executable path for GeoIP database lookup: %w", err)
 	}
 	return geoip2.Open(filepath.Join(filepath.Dir(execPath), "GeoIP", fileName))
 }

@@ -52,7 +52,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	portInt, err := strconv.Atoi(server.Port)
 	if err != nil || portInt < 1 || portInt > 65535 {
 		ctx.JSON(400, gin.H{
-			"error": "invalid port",
+			"error": "port must be a number between 1 and 65535",
 		})
 		return
 	}
