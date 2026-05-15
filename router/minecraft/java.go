@@ -5,17 +5,17 @@ import (
 	"simpleWebUtils/utils"
 )
 
-type minecraftBedrockRemote struct {
+type minecraftJavaRemote struct {
 	Server string `json:"server"`
 	Port   string `json:"port"`
 }
 
-// motd-bedrock
-func utilsMinecraftBedrock(ctx *gin.Context) {
-	var server minecraftBedrockRemote
+// motd-java
+func utilsMinecraftJava(ctx *gin.Context) {
+	var server minecraftJavaRemote
 
 	if ctx.Request.Method == "GET" {
-		server = minecraftBedrockRemote{
+		server = minecraftJavaRemote{
 			Server: ctx.Param("server"),
 			Port:   ctx.Param("port"),
 		}
@@ -30,10 +30,10 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 		}
 	}
 
-	data, err := QueryBedrockMOTD(server.Server, server.Port)
+	data, err := QueryJavaMOTD(server.Server, server.Port)
 	if err != nil {
 		ctx.JSON(400, gin.H{
-			"error":       "cannot query bedrock motd",
+			"error":       "cannot query java motd",
 			"description": utils.LocalAddressCleaner(err.Error()),
 		})
 		return

@@ -5,6 +5,7 @@ import (
 	"os"
 	"simpleWebUtils/router/code"
 	"simpleWebUtils/router/ip"
+	"simpleWebUtils/router/mcp"
 	"simpleWebUtils/router/minecraft"
 	"simpleWebUtils/router/ua"
 	"strconv"
@@ -47,6 +48,7 @@ func main() {
 	ip.Init(r)
 	code.Init(r)
 	minecraft.Init(r)
+	mcp.Init(r)
 
 	port := 4399
 	err := r.Run(":" + strconv.Itoa(port))
