@@ -15,6 +15,13 @@ type request struct {
 	Params  map[string]interface{} `json:"params"`
 }
 
+type requestPayload struct {
+	JSONRPC string                 `json:"jsonrpc"`
+	ID      json.RawMessage        `json:"id"`
+	Method  string                 `json:"method"`
+	Params  map[string]interface{} `json:"params"`
+}
+
 type response struct {
 	JSONRPC string      `json:"jsonrpc"`
 	ID      interface{} `json:"id"`
@@ -108,18 +115,25 @@ func parseRequest(ctx *gin.Context) (request, bool, error) {
 		return req, false, err
 	}
 
-	var rawMap map[string]json.RawMessage
-	err = json.Unmarshal(rawBody, &rawMap)
+	var payload requestPayload
+	err = json.Unmarshal(rawBody, &payload)
 	if err != nil {
 		return req, false, err
 	}
 
-	err = json.Unmarshal(rawBody, &req)
-	if err != nil {
-		return req, false, err
+	req = request{
+		JSONRPC: payload.JSONRPC,
+		Method:  payload.Method,
+		Params:  payload.Params,
+	}
+	if len(payload.ID) > 0 {
+		err = json.Unmarshal(payload.ID, &req.ID)
+		if err != nil {
+			return req, false, err
+		}
 	}
 
-	_, hasID := rawMap["id"]
+	hasID := len(payload.ID) > 0
 	if req.Params == nil {
 		req.Params = map[string]interface{}{}
 	}

@@ -377,19 +377,21 @@ func flattenDescription(value interface{}) string {
 	case string:
 		return typed
 	case []interface{}:
-		result := ""
+		var builder strings.Builder
 		for _, item := range typed {
-			result += flattenDescription(item)
+			builder.WriteString(flattenDescription(item))
 		}
-		return result
+		return builder.String()
 	case map[string]interface{}:
 		text, _ := typed["text"].(string)
-		result := text
+		var builder strings.Builder
+		builder.WriteString(text)
 		if extraValue, ok := typed["extra"].([]interface{}); ok {
 			for _, item := range extraValue {
-				result += flattenDescription(item)
+				builder.WriteString(flattenDescription(item))
 			}
 		}
+		result := builder.String()
 		if result != "" {
 			return result
 		}
