@@ -15,6 +15,11 @@ type minecraftBedrockRemote struct {
 	Port   string `json:"port"`
 }
 
+const (
+	minecraftBedrockPrefix   = "MCPE;"
+	minBedrockResponseFields = 9
+)
+
 // motd-bedrock
 func utilsMinecraftBedrock(ctx *gin.Context) {
 
@@ -114,7 +119,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	}
 
 	motd := string(buf[:n])
-	if idx := strings.Index(motd, "MCPE;"); idx >= 0 {
+	if idx := strings.Index(motd, minecraftBedrockPrefix); idx >= 0 {
 		motd = motd[idx:]
 	}
 	motd = strings.TrimRight(motd, "\x00")
@@ -122,7 +127,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	if len(data) > 0 && data[len(data)-1] == "" {
 		data = data[:len(data)-1]
 	}
-	if len(data) < 9 {
+	if len(data) < minBedrockResponseFields {
 		ctx.JSON(400, gin.H{
 			"error": "cannot parse response",
 		})
