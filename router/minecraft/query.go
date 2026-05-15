@@ -57,9 +57,12 @@ func QueryBedrockMOTD(server string, port string) (*BedrockMOTDResult, error) {
 		port = "19132"
 	}
 
-	addr, err := net.ResolveUDPAddr("udp", server+":"+port)
+	addr, err := net.ResolveUDPAddr("udp", net.JoinHostPort(server, port))
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve server: %w", err)
+	}
+	if err = validateExternalAddress(addr.IP); err != nil {
+		return nil, err
 	}
 
 	conn, err := net.DialUDP("udp", nil, addr)
@@ -136,9 +139,12 @@ func QueryJavaMOTD(server string, port string) (*JavaMOTDResult, error) {
 		port = "25565"
 	}
 
-	addr, err := net.ResolveTCPAddr("tcp", server+":"+port)
+	addr, err := net.ResolveTCPAddr("tcp", net.JoinHostPort(server, port))
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve server: %w", err)
+	}
+	if err = validateExternalAddress(addr.IP); err != nil {
+		return nil, err
 	}
 
 	conn, err := net.DialTimeout("tcp", addr.String(), 5*time.Second)
@@ -370,6 +376,12 @@ func flattenDescription(value interface{}) string {
 	switch typed := value.(type) {
 	case string:
 		return typed
+	case []interface{}:
+		result := ""
+		for _, item := range typed {
+			result += flattenDescription(item)
+		}
+		return result
 	case map[string]interface{}:
 		text, _ := typed["text"].(string)
 		result := text
@@ -386,4 +398,14 @@ func flattenDescription(value interface{}) string {
 	default:
 		return ""
 	}
+}
+
+func validateExternalAddress(ip net.IP) error {
+	if ip == nil {
+		return errors.New("cannot resolve server ip")
+	}
+	if ip.IsLoopback() || ip.IsPrivate() || ip.IsLinkLocalUnicast() || ip.IsLinkLocalMulticast() || ip.IsMulticast() || ip.IsUnspecified() {
+		return errors.New("target ip is not allowed")
+	}
+	return nil
 }

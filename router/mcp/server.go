@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"simpleWebUtils/router/minecraft"
+	"simpleWebUtils/utils"
 )
 
 type request struct {
@@ -42,8 +43,7 @@ func index(ctx *gin.Context) {
 }
 
 func handleJSONRPC(ctx *gin.Context) {
-	var req request
-	err := ctx.BindJSON(&req)
+	req, hasID, err := parseRequest(ctx)
 	if err != nil {
 		ctx.JSON(400, response{
 			JSONRPC: "2.0",
@@ -55,7 +55,7 @@ func handleJSONRPC(ctx *gin.Context) {
 		return
 	}
 
-	if req.JSONRPC != "" && req.JSONRPC != "2.0" {
+	if req.JSONRPC != "2.0" {
 		ctx.JSON(200, response{
 			JSONRPC: "2.0",
 			ID:      req.ID,
@@ -68,6 +68,10 @@ func handleJSONRPC(ctx *gin.Context) {
 	}
 
 	result, rpcErr := invoke(req.Method, req.Params)
+	if !hasID {
+		ctx.Status(204)
+		return
+	}
 	if rpcErr != nil {
 		ctx.JSON(200, response{
 			JSONRPC: "2.0",
@@ -90,6 +94,33 @@ func handleJSONRPC(ctx *gin.Context) {
 type rpcError struct {
 	Code    int
 	Message string
+}
+
+func parseRequest(ctx *gin.Context) (request, bool, error) {
+	var req request
+
+	rawBody, err := ctx.GetRawData()
+	if err != nil {
+		return req, false, err
+	}
+
+	var rawMap map[string]json.RawMessage
+	err = json.Unmarshal(rawBody, &rawMap)
+	if err != nil {
+		return req, false, err
+	}
+
+	err = json.Unmarshal(rawBody, &req)
+	if err != nil {
+		return req, false, err
+	}
+
+	_, hasID := rawMap["id"]
+	if req.Params == nil {
+		req.Params = map[string]interface{}{}
+	}
+
+	return req, hasID, nil
 }
 
 func invoke(method string, params map[string]interface{}) (interface{}, *rpcError) {
@@ -164,7 +195,7 @@ func invoke(method string, params map[string]interface{}) (interface{}, *rpcErro
 		if err != nil {
 			return nil, &rpcError{
 				Code:    -32000,
-				Message: err.Error(),
+				Message: utils.LocalAddressCleaner(err.Error()),
 			}
 		}
 
@@ -199,14 +230,20 @@ func callTool(name string, arguments map[string]interface{}) (interface{}, error
 		if err != nil {
 			return nil, err
 		}
-		port := getOptionalString(arguments, "port")
+		port, err := getOptionalString(arguments, "port")
+		if err != nil {
+			return nil, err
+		}
 		return minecraft.QueryBedrockMOTD(server, port)
 	case "java_motd":
 		server, err := getRequiredString(arguments, "server")
 		if err != nil {
 			return nil, err
 		}
-		port := getOptionalString(arguments, "port")
+		port, err := getOptionalString(arguments, "port")
+		if err != nil {
+			return nil, err
+		}
 		return minecraft.QueryJavaMOTD(server, port)
 	default:
 		return nil, errors.New("unknown tool: " + name)
@@ -225,14 +262,14 @@ func getRequiredString(values map[string]interface{}, key string) (string, error
 	return stringValue, nil
 }
 
-func getOptionalString(values map[string]interface{}, key string) string {
+func getOptionalString(values map[string]interface{}, key string) (string, error) {
 	value, ok := values[key]
 	if !ok {
-		return ""
+		return "", nil
 	}
 	stringValue, ok := value.(string)
 	if !ok {
-		return ""
+		return "", errors.New("invalid params: " + key + " must be a string")
 	}
-	return stringValue
+	return stringValue, nil
 }

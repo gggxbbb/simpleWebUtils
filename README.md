@@ -88,7 +88,7 @@ GET /minecraft/bedrock/<address>/<port>
 POST /minecraft/bedrock
 {
     "server": "<address>",
-    "port": <port>
+    "port": "<port>"
 }
 ```
 
@@ -106,7 +106,7 @@ GET /minecraft/java/<address>/<port>
 POST /minecraft/java
 {
     "server": "<address>",
-    "port": <port>
+    "port": "<port>"
 }
 ```
 
