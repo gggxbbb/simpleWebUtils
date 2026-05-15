@@ -3,6 +3,8 @@ package ip
 import (
 	"github.com/oschwald/geoip2-golang"
 	"net"
+	"os"
+	"path/filepath"
 )
 
 type data struct {
@@ -51,7 +53,7 @@ type detail struct {
 
 func analyzeIP(ip string) data {
 
-	db, err := geoip2.Open("./GeoIP/GeoLite2-City.mmdb")
+	db, err := openGeoIPDB()
 	if err != nil {
 		return data{IP: ip, OK: false}
 	}
@@ -95,4 +97,17 @@ func analyzeIP(ip string) data {
 		},
 	}
 
+}
+
+func openGeoIPDB() (*geoip2.Reader, error) {
+	const fileName = "GeoLite2-City.mmdb"
+	if db, err := geoip2.Open(filepath.Join("GeoIP", fileName)); err == nil {
+		return db, nil
+	}
+
+	execPath, err := os.Executable()
+	if err != nil {
+		return nil, err
+	}
+	return geoip2.Open(filepath.Join(filepath.Dir(execPath), "GeoIP", fileName))
 }

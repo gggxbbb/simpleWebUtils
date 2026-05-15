@@ -15,10 +15,15 @@ func html(c *gin.Context) {
 }
 
 func generateHTML(c *gin.Context) {
-	tepl, _ := template.New("code").Parse(uaHTML)
-	data := useragent.Parse(c.GetHeader("User-Agent"))
-	err := tepl.Execute(c.Writer, data)
+	tepl, err := template.New("code").Parse(uaHTML)
 	if err != nil {
+		c.String(500, "failed to render template")
+		return
+	}
+	data := useragent.Parse(c.GetHeader("User-Agent"))
+	err = tepl.Execute(c.Writer, data)
+	if err != nil {
+		c.String(500, "failed to render template")
 		return
 	}
 }

@@ -31,13 +31,18 @@ type codeDetailS struct {
 }
 
 func generateHTML(code int, detail string, c *gin.Context) {
-	tepl, _ := template.New("code").Parse(codeHTML)
+	tepl, err := template.New("code").Parse(codeHTML)
+	if err != nil {
+		c.String(500, "failed to render template")
+		return
+	}
 	data := codeDetailS{
 		Code:    code,
 		Message: detail,
 	}
-	err := tepl.Execute(c.Writer, data)
+	err = tepl.Execute(c.Writer, data)
 	if err != nil {
+		c.String(500, "failed to render template")
 		return
 	}
 }

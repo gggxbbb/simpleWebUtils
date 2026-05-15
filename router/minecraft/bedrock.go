@@ -28,7 +28,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 		}
 	} else if ctx.Request.Method == "POST" {
 		//POST
-		err := ctx.Bind(&server)
+		err := ctx.ShouldBindJSON(&server)
 		if err != nil {
 			ctx.JSON(400, gin.H{
 				"error":       "cannot parse request",
@@ -38,12 +38,28 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 		}
 	}
 
+	if strings.TrimSpace(server.Server) == "" {
+		ctx.JSON(400, gin.H{
+			"error": "server is required",
+		})
+		return
+	}
+
 	if server.Port == "" {
 		server.Port = "19132"
 	}
 
+	portInt, err := strconv.Atoi(server.Port)
+	if err != nil || portInt < 1 || portInt > 65535 {
+		ctx.JSON(400, gin.H{
+			"error": "invalid port",
+		})
+		return
+	}
+
 	//reserve server
-	addr, err := net.ResolveUDPAddr("udp", server.Server+":"+server.Port)
+	target := net.JoinHostPort(strings.Trim(server.Server, "[]"), server.Port)
+	addr, err := net.ResolveUDPAddr("udp", target)
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot resolve server",
@@ -88,7 +104,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 		})
 		return
 	}
-	_, err = conn.Read(buf)
+	n, err := conn.Read(buf)
 	if err != nil {
 		ctx.JSON(400, gin.H{
 			"error":       "cannot receive response",
@@ -97,12 +113,26 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 		return
 	}
 
-	motd := string(buf)
+	motd := strings.Trim(string(buf[:n]), "\x00")
 	data := strings.Split(motd, ";")
-	//remove last empty string
-	data = data[:len(data)-1]
+	if len(data) > 0 && data[len(data)-1] == "" {
+		data = data[:len(data)-1]
+	}
+	if len(data) < 9 {
+		ctx.JSON(400, gin.H{
+			"error": "cannot parse response",
+		})
+		return
+	}
 
 	online, err := strconv.Atoi(data[4])
+	if err != nil {
+		ctx.JSON(400, gin.H{
+			"error":       "cannot parse response",
+			"description": utils.LocalAddressCleaner(err.Error()),
+		})
+		return
+	}
 	max, err := strconv.Atoi(data[5])
 	if err != nil {
 		ctx.JSON(400, gin.H{

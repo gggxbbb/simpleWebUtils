@@ -14,11 +14,16 @@ func html(c *gin.Context) {
 }
 
 func generateHTML(c *gin.Context) {
-	tepl, _ := template.New("ip").Parse(ipHTML)
+	tepl, err := template.New("ip").Parse(ipHTML)
+	if err != nil {
+		c.String(500, "failed to render template")
+		return
+	}
 	ip := c.ClientIP()
 	data := analyzeIP(ip)
-	err := tepl.Execute(c.Writer, data)
+	err = tepl.Execute(c.Writer, data)
 	if err != nil {
+		c.String(500, "failed to render template")
 		return
 	}
 }
