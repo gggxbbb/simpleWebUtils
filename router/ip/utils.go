@@ -102,13 +102,19 @@ func analyzeIP(ip string) data {
 
 func openGeoIPDB() (*geoip2.Reader, error) {
 	const fileName = "GeoLite2-City.mmdb"
-	if db, err := geoip2.Open(filepath.Join("GeoIP", fileName)); err == nil {
+	relativePath := filepath.Join("GeoIP", fileName)
+	if db, err := geoip2.Open(relativePath); err == nil {
+		return db, nil
+	} else {
+		execPath, execErr := os.Executable()
+		if execErr != nil {
+			return nil, fmt.Errorf("failed to determine executable path for GeoIP database lookup after trying %q: %w", relativePath, execErr)
+		}
+		execDBPath := filepath.Join(filepath.Dir(execPath), "GeoIP", fileName)
+		db, openExecErr := geoip2.Open(execDBPath)
+		if openExecErr != nil {
+			return nil, fmt.Errorf("failed to open GeoIP database (tried %q: %v; tried %q: %w)", relativePath, err, execDBPath, openExecErr)
+		}
 		return db, nil
 	}
-
-	execPath, err := os.Executable()
-	if err != nil {
-		return nil, fmt.Errorf("failed to determine executable path for GeoIP database lookup: %w", err)
-	}
-	return geoip2.Open(filepath.Join(filepath.Dir(execPath), "GeoIP", fileName))
 }

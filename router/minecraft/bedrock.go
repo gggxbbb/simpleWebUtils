@@ -113,7 +113,11 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 		return
 	}
 
-	motd := strings.Trim(string(buf[:n]), "\x00")
+	motd := string(buf[:n])
+	if idx := strings.Index(motd, "MCPE;"); idx >= 0 {
+		motd = motd[idx:]
+	}
+	motd = strings.TrimRight(motd, "\x00")
 	data := strings.Split(motd, ";")
 	if len(data) > 0 && data[len(data)-1] == "" {
 		data = data[:len(data)-1]
