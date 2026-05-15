@@ -33,7 +33,7 @@ type codeDetailS struct {
 func generateHTML(code int, detail string, c *gin.Context) {
 	tepl, err := template.New("code").Parse(codeHTML)
 	if err != nil {
-		c.String(500, "failed to render template")
+		c.String(500, "failed to parse template")
 		return
 	}
 	data := codeDetailS{
@@ -42,7 +42,7 @@ func generateHTML(code int, detail string, c *gin.Context) {
 	}
 	err = tepl.Execute(c.Writer, data)
 	if err != nil {
-		c.String(500, "failed to render template")
+		c.String(500, "failed to execute template")
 		return
 	}
 }

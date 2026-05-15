@@ -17,13 +17,13 @@ func html(c *gin.Context) {
 func generateHTML(c *gin.Context) {
 	tepl, err := template.New("code").Parse(uaHTML)
 	if err != nil {
-		c.String(500, "failed to render template")
+		c.String(500, "failed to parse template")
 		return
 	}
 	data := useragent.Parse(c.GetHeader("User-Agent"))
 	err = tepl.Execute(c.Writer, data)
 	if err != nil {
-		c.String(500, "failed to render template")
+		c.String(500, "failed to execute template")
 		return
 	}
 }

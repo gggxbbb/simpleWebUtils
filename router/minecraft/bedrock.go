@@ -31,7 +31,7 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 		err := ctx.ShouldBindJSON(&server)
 		if err != nil {
 			ctx.JSON(400, gin.H{
-				"error":       "cannot parse request",
+				"error":       "invalid JSON request body",
 				"description": utils.LocalAddressCleaner(err.Error()),
 			})
 			return
