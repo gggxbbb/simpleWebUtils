@@ -404,8 +404,13 @@ func validateExternalAddress(ip net.IP) error {
 	if ip == nil {
 		return errors.New("cannot resolve server ip")
 	}
-	if ip.IsLoopback() || ip.IsPrivate() || ip.IsLinkLocalUnicast() || ip.IsLinkLocalMulticast() || ip.IsMulticast() || ip.IsUnspecified() {
-		return errors.New("target ip is not allowed")
+	isLoopback := ip.IsLoopback()
+	isPrivate := ip.IsPrivate()
+	isLinkLocal := ip.IsLinkLocalUnicast() || ip.IsLinkLocalMulticast()
+	isMulticast := ip.IsMulticast()
+	isUnspecified := ip.IsUnspecified()
+	if isLoopback || isPrivate || isLinkLocal || isMulticast || isUnspecified {
+		return errors.New("target IP address is restricted (loopback, private, link-local, multicast, or unspecified addresses are not allowed)")
 	}
 	return nil
 }

@@ -56,12 +56,16 @@ func handleJSONRPC(ctx *gin.Context) {
 	}
 
 	if req.JSONRPC != "2.0" {
+		message := "invalid request: jsonrpc must be \"2.0\""
+		if req.JSONRPC != "" {
+			message = "invalid request: jsonrpc must be \"2.0\", got \"" + req.JSONRPC + "\""
+		}
 		ctx.JSON(200, response{
 			JSONRPC: "2.0",
 			ID:      req.ID,
 			Error: &errorField{
 				Code:    -32600,
-				Message: "invalid request",
+				Message: message,
 			},
 		})
 		return
