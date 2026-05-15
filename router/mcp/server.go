@@ -3,6 +3,7 @@ package mcp
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"simpleWebUtils/router/minecraft"
 	"simpleWebUtils/utils"
@@ -65,7 +66,7 @@ func handleJSONRPC(ctx *gin.Context) {
 	if req.JSONRPC != "2.0" {
 		message := "invalid request: jsonrpc must be \"2.0\""
 		if req.JSONRPC != "" {
-			message = "invalid request: jsonrpc must be \"2.0\", got \"" + req.JSONRPC + "\""
+			message = fmt.Sprintf("invalid request: jsonrpc must be \"2.0\", got %q", req.JSONRPC)
 		}
 		ctx.JSON(200, response{
 			JSONRPC: "2.0",

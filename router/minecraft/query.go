@@ -404,7 +404,7 @@ func flattenDescription(value interface{}) string {
 
 func validateExternalAddress(ip net.IP) error {
 	if ip == nil {
-		return errors.New("cannot resolve server ip")
+		return errors.New("cannot resolve server IP")
 	}
 	isLoopback := ip.IsLoopback()
 	isPrivate := ip.IsPrivate()
