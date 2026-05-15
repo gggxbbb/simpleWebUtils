@@ -63,7 +63,9 @@ func utilsMinecraftBedrock(ctx *gin.Context) {
 	}
 
 	//reserve server
-	target := net.JoinHostPort(strings.Trim(server.Server, "[]"), server.Port)
+	serverHost := strings.TrimPrefix(server.Server, "[")
+	serverHost = strings.TrimSuffix(serverHost, "]")
+	target := net.JoinHostPort(serverHost, server.Port)
 	addr, err := net.ResolveUDPAddr("udp", target)
 	if err != nil {
 		ctx.JSON(400, gin.H{

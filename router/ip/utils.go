@@ -108,7 +108,7 @@ func openGeoIPDB() (*geoip2.Reader, error) {
 	} else {
 		execPath, execErr := os.Executable()
 		if execErr != nil {
-			return nil, fmt.Errorf("failed to determine executable path for GeoIP database lookup after trying %q: %w", relativePath, execErr)
+			return nil, fmt.Errorf("failed to determine executable path for GeoIP database lookup (tried %q: %v): %w", relativePath, err, execErr)
 		}
 		execDBPath := filepath.Join(filepath.Dir(execPath), "GeoIP", fileName)
 		db, openExecErr := geoip2.Open(execDBPath)
